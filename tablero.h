@@ -45,6 +45,7 @@ void llenar_tablero(tablero* tab) {
 		cont++;
 	    }
 	}
+    numero_agregar++;
     }
 }
 
