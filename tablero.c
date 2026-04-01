@@ -119,12 +119,12 @@ void llenar_tablero(tablero* tab) {
 
     for(int i = 0; i < (tab->dimension)*(tab->dimension); i += 2){
 
-        tab->matriz[i].visibilidad = 0; //asignar un valor a el atributo visibilidad que pertenece a uno de los objetos tipo casilla que se encuentra en la direccion de
+        tab->matriz[i].visibilidad = 1; //asignar un valor a el atributo visibilidad que pertenece a uno de los objetos tipo casilla que se encuentra en la direccion de
         // memoria a la que apunta el puntero matriz, ese puntero matriz es atributo de un puntero llamado tab que apunta a un dato tipo tablero
         tab->matriz[i].numero = valor; //asignar un valor a el atributo numero que pertenece a uno de los objetos tipo casilla que se encuentran en la direccion de
         // memoria a la que apunta el puntero matriz, ese puntero matriz es atributo de un puntero llamado tab que apunta a un dato tipo tablero
 
-        tab->matriz[i + 1].visibilidad = 0;
+        tab->matriz[i + 1].visibilidad = 1;
         tab->matriz[i + 1].numero = valor;
 
         valor ++;
@@ -142,7 +142,20 @@ void llenar_tablero(tablero* tab) {
         tab->matriz[j] = temp; // asignar valor guardado de esa casilla escojida a la casilla random (intercambio)
     }
 
+    int input = 0;
     imprimir_tablero(tab);
+
+    while(input != 1){
+
+        printf("Memorice el tablero y ingrese un 1 para continuar ");
+        scanf("%d", &input);
+    }
+    for(int i = 0; i < (tab->dimension)*(tab->dimension); i += 1){
+
+        tab->matriz[i].visibilidad = 0;
+    }
+    imprimir_tablero(tab);
+
 }
 
 void editar_tablero(tablero* tab, int *encontradas){ //se está pasando el puntero encontradas
