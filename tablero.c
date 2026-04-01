@@ -213,42 +213,49 @@ void editar_tablero(tablero* tab, int *encontradas){ //se está pasando el punte
 
 int main(){
 
-    int n;
+    int seguir_jugando = 1;
+    while(seguir_jugando != 0){
 
-    printf("ingrese el tamaño del tablero: ");
+        int n;
 
-    scanf("%d", &n); //&n es un puntero a n y con scanf se le está asignando como valor a ese puntero lo que agarre de entrada en la terminal pero esto es stack &
+        printf("ingrese el tamaño del tablero: ");
 
-    if(n*n % 2 == 0){
+        scanf("%d", &n); //&n es un puntero a n y con scanf se le está asignando como valor a ese puntero lo que agarre de entrada en la terminal pero esto es stack &
 
-        bool juego_terminado = false;
+        if(n*n % 2 == 0){
 
-        srand(time(NULL)); //reinicia la semilla de rand()
+            bool juego_terminado = false;
 
-        tablero* tab = crear_tablero(n); // tab solo existe dentro del if
+            srand(time(NULL)); //reinicia la semilla de rand()
 
-        int encontradas = 0; //variable <encontradas> vive en el stack
+            tablero* tab = crear_tablero(n); // tab solo existe dentro del if
 
-        llenar_tablero(tab);
-        
-        while(!juego_terminado) {
+            int encontradas = 0; //variable <encontradas> vive en el stack
+
+            llenar_tablero(tab);
             
-            editar_tablero(tab, &encontradas); //pasar el puntero de "encontradas" pero ese puntero vive en el stack, no en el heap, por lo que no hay que liberarlo
-            //con el puntero el dato puede vivir y editarse en cualquier función que se llame dentro de verificarjuegoterminado
+            while(!juego_terminado) {
+                
+                editar_tablero(tab, &encontradas); //pasar el puntero de "encontradas" pero ese puntero vive en el stack, no en el heap, por lo que no hay que liberarlo
+                //con el puntero el dato puede vivir y editarse en cualquier función que se llame dentro de verificarjuegoterminado
 
-            juego_terminado = verificarjuegoterminado(tab, &encontradas); //pasa el puntero de "* encontradas" (dirección de memoria no dato) es casi lo mismo que 
-            // hacer esto:
-            ////int encontradas = malloc(sizeof(int));
+                juego_terminado = verificarjuegoterminado(tab, &encontradas); //pasa el puntero de "* encontradas" (dirección de memoria no dato) es casi lo mismo que 
+                // hacer esto:
+                ////int encontradas = malloc(sizeof(int));
 
-            //*encontradas = 0;
-            //ojo: al hacer esto <encontradas> ya no vive en el stack sinó en el heap y hay que liberarlo al terminar
+                //*encontradas = 0;
+                //ojo: al hacer esto <encontradas> ya no vive en el stack sinó en el heap y hay que liberarlo al terminar
+            }
+
+            liberar_memoria(tab); //liberar memoria
+
+        } else {
+
+            printf("El número ingresado no cumple con un número par de casillas \n");
         }
 
-        liberar_memoria(tab); //liberar memoria
-
-    } else {
-
-        printf("El número ingresado no cumple con un número par de casillas \n");
+        printf("Desea jugar otra vez? 1 para si 0 para no: ");
+        scanf("%d", &seguir_jugando);
     }
 
     return 0;
